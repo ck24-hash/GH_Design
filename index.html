@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Voltiris GH Design</title>
+<meta name="description" content="Design a new greenhouse with Voltiris: the truss structure, the Voltiris installation on it and the LED light plan, with one PDF report.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23001D3B%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%276%27 fill=%27%2300C9A5%27/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap bar">
+    <span class="logo" role="img" aria-label="Voltiris"></span>
+    <div class="brandline">
+      <h1>GH <span>design</span></h1>
+      <p>New greenhouse: structure, Voltiris installation and LEDs, in that order.</p>
+    </div>
+    <div class="hdr-actions">
+      <span class="status" id="status" role="status"><i></i><span>Light not calculated yet</span></span>
+      <button class="btn" id="saveBtn" type="button" title="Download a file with every parameter">Save design</button>
+      <label class="btn" for="openFile" title="Load a design file saved before">Open design<input type="file" id="openFile" accept=".json,application/json" class="sr"></label>
+      <button class="btn primary" id="pdfBtn" type="button">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v8m0 0 3-3m-3 3L5 7M3 12.5h10"/></svg>
+        PDF report
+      </button>
+      <p class="hint report-note" id="reportNote" role="status"></p>
+    </div>
+  </div>
+  <nav class="wrap tabs" role="tablist" aria-label="Design steps">
+    <button type="button" role="tab" id="tab-structure" data-tab="structure" aria-controls="panel-structure" aria-selected="true"><span class="n">1</span><span class="tl"><b>Structure</b><small id="sumStructure"></small></span></button>
+    <button type="button" role="tab" id="tab-voltiris" data-tab="voltiris" aria-controls="panel-voltiris" aria-selected="false" tabindex="-1"><span class="n">2</span><span class="tl"><b>Voltiris</b><small id="sumVoltiris"></small></span></button>
+    <button type="button" role="tab" id="tab-leds" data-tab="leds" aria-controls="panel-leds" aria-selected="false" tabindex="-1"><span class="n">3</span><span class="tl"><b>LEDs</b><small id="sumLeds"></small></span></button>
+  </nav>
+</header>
+
+<div class="wrap">
+
+<!-- =============================================================== 1 STRUCTURE -->
+<section class="tabpanel" id="panel-structure" role="tabpanel" aria-labelledby="tab-structure">
+  <main class="app">
+    <aside class="settings" aria-label="Structure settings">
+      <div class="card step">
+        <h2><span class="n">1</span>Project</h2>
+        <div class="field"><label for="pName">Project / site</label><input type="text" id="pName" data-p="name" maxlength="60"></div>
+        <div class="row2">
+          <div class="field"><label for="pRef">Truss reference</label><input type="text" id="pRef" data-p="ref" maxlength="20"></div>
+          <div class="field"><label for="pRev">Revision</label><input type="text" id="pRev" data-p="rev" maxlength="10"></div>
+        </div>
+        <div class="field"><label for="pAuthor">Prepared by</label><input type="text" id="pAuthor" data-p="author" maxlength="60"></div>
+        <div class="field"><label for="pNotes">Notes</label><textarea id="pNotes" data-p="notes" rows="2"></textarea></div>
+      </div>
+
+      <div class="card step">
+        <h2><span class="n">2</span>Truss and pillars</h2>
+        <label class="num"><span>Truss length (chapel width)</span><span class="in"><input type="number" id="sL" data-k="L" min="1" step="any"><i>mm</i></span></label>
+        <label class="num"><span>Truss height (outer)</span><span class="in"><input type="number" id="sH" data-k="H" min="1" step="any"><i>mm</i></span></label>
+        <label class="num"><span>Beam thickness</span><span class="in"><input type="number" id="stc" data-k="tc" min="0" step="any"><i>mm</i></span></label>
+        <label class="num"><span>Structure thickness (out of plane)</span><span class="in"><input type="number" id="szW" data-k="zW" min="1" step="any"><i>mm</i></span></label>
+        <label class="num"><span>Pillar width</span><span class="in"><input type="number" id="spw" data-k="pw" min="0" step="any"><i>mm</i></span></label>
+        <label class="num"><span>Pillar height (ground to truss top)</span><span class="in"><input type="number" id="spH" data-k="pH" min="0" step="any"><i>mm</i></span></label>
+        <label class="num"><span>Edge post width</span><span class="in"><input type="number" id="ste" data-k="te" min="0" step="any"><i>mm</i></span></label>
+        <label class="num"><span>Truss spacing (along the greenhouse)</span><span class="in"><input type="number" id="sbay" data-k="bay" min="1000" step="any"><i>mm</i></span></label>
+        <p class="hint">The truss length runs from the outer face of the left pillar to the outer face of the next one, so it is also the chapel width. The truss spans between the edge posts against each pillar.</p>
+      </div>
+
+      <div class="card step">
+        <h2><span class="n">3</span>Triangles</h2>
+        <label class="num"><span>Triangles per side</span><span class="in"><input type="number" id="snSide" data-k="nSide" min="0" step="1"><i>pcs</i></span></label>
+        <label class="num"><span>Triangle length (base, outer)</span><span class="in"><input type="number" id="sw" data-k="w" min="1" step="any"><i>mm</i></span></label>
+        <label class="num"><span>Triangle bar thickness</span><span class="in"><input type="number" id="std" data-k="td" min="0" step="any"><i>mm</i></span></label>
+        <label class="num"><span>Middle reinforcement thickness</span><span class="in"><input type="number" id="stm" data-k="tm" min="0" step="any"><i>mm</i></span></label>
+        <label class="num"><span>Gap, middle to first triangle</span><span class="in"><input type="number" id="soffMid" data-k="offMid" min="0" step="any"><i>mm</i></span></label>
+        <label class="num"><span>Gap between triangles</span><span class="in"><input type="number" id="soffBtw" data-k="offBtw" min="0" step="any"><i>mm</i></span></label>
+        <p class="hint">Gaps are clear distances along the beam. Triangles that run into an edge post are cut at its face.</p>
+      </div>
+
+      <div class="card step">
+        <h2><span class="n">4</span>Gutters, culture lines and crop</h2>
+        <label class="switch"><input type="checkbox" id="sgutter" data-k="gutter"> <span>Gutter lines</span></label>
+        <div class="sub" id="sGutter">
+          <label class="num"><span>Left pillar to first gutter line</span><span class="in"><input type="number" id="sgFirst" data-k="gFirst" min="0" step="any"><i>mm</i></span></label>
+          <label class="num"><span>Number of gutter lines</span><span class="in"><input type="number" id="sgCount" data-k="gCount" min="1" step="1"><i>pcs</i></span></label>
+          <label class="num"><span>Gutter line height (truss underside to gutter)</span><span class="in"><input type="number" id="sgHang" data-k="gHang" min="0" step="any"><i>mm</i></span></label>
+        </div>
+        <label class="switch"><input type="checkbox" id="sculture" data-k="culture"> <span>Culture lines</span></label>
+        <div class="sub" id="sCultureWithG">
+          <label class="num"><span>Distance from gutter line</span><span class="in"><input type="number" id="scDist" data-k="cDist" min="0" step="any"><i>mm</i></span></label>
+          <p class="hint">One culture line on each side of every gutter line.</p>
+        </div>
+        <div class="sub" id="sCultureAlone">
+          <label class="num"><span>Left pillar to first culture line</span><span class="in"><input type="number" id="scFirst" data-k="cFirst" min="0" step="any"><i>mm</i></span></label>
+          <label class="num"><span>Number of culture lines</span><span class="in"><input type="number" id="scCount" data-k="cCount" min="1" step="1"><i>pcs</i></span></label>
+        </div>
+        <p class="hint" id="sFixHint">Lines are fixed to the underside of the lower beam and spread evenly, with the same offset at both pillars.</p>
+        <label class="num"><span>Top of the crop (from the ground)</span><span class="in"><input type="number" id="scrop" data-k="crop" min="0" step="any"><i>mm</i></span></label>
+        <p class="hint" id="sCropHint">The crop can not be lower than the gutters.</p>
+      </div>
+
+      <div class="card step">
+        <h2><span class="n">5</span>Module lines</h2>
+        <label class="switch"><input type="checkbox" id="sbrk" data-k="brk"> <span>Bracket line on a pillar</span></label>
+        <div class="sub" id="sBrk">
+          <label class="num"><span>Pillar</span><span class="in"><select id="sbrkSide" data-k="brkSide"><option value="left">Left</option><option value="right">Right</option></select></span></label>
+          <label class="num"><span>Distance from pillar face</span><span class="in"><input type="number" id="sbrkDist" data-k="brkDist" min="0" step="any"><i>mm</i></span></label>
+        </div>
+        <p class="hint" id="sBrkHint">The pattern repeats: the next pillar has the same bracket line, and the last I keeps the minimum spacing to it.</p>
+        <p class="hint" id="sNoBrkHint">No bracket line. I distances start from the left pillar.</p>
+        <p class="hint">Every chapel has 5 module lines: the bracket line and 4 I, or 5 I without a bracket line. They alternate between module positions A and B over the whole greenhouse.</p>
+        <label class="num"><span>Number of I attachments</span><span class="in"><input type="number" id="snI" data-k="nI" min="0" step="1"><i>pcs</i></span></label>
+        <label class="num"><span>Minimum spacing between module lines</span><span class="in"><input type="number" id="sdmin" data-k="dmin" min="0" step="any"><i>mm</i></span></label>
+        <label class="num"><span>Placement</span><span class="in"><select id="siMode" data-k="iMode"><option value="optimal">Optimal</option><option value="uniform">Uniform</option><option value="manual">Manual</option></select></span></label>
+        <div class="sub" id="sUniform">
+          <label class="num"><span id="sULbl">First I from bracket line</span><span class="in"><input type="number" id="suFirst" data-k="uFirst" min="0" step="any"><i>mm</i></span></label>
+          <p class="hint">The other I are spread evenly up to the bracket line on the next pillar (or the far pillar if there is no bracket line).</p>
+        </div>
+        <div class="sub" id="sManual"></div>
+        <p class="hint" id="sOptimal">Each I gets a position you can find on the structure without measuring: a U-bolt against the inside of a triangle leg, a U-bolt centred between two triangles, or a plate end touching a gutter or culture line. All module lines keep the minimum spacing and stay as close as possible to an even spread. I that cannot be referenced this way get a free position.</p>
+        <span class="lbl">I geometry</span>
+        <label class="num"><span>Installation height (I length below the truss)</span><span class="in"><input type="number" id="shI" data-k="hI" min="100" step="any"><i>mm</i></span></label>
+        <label class="num"><span>Base plate length</span><span class="in"><input type="number" id="splate" data-k="plate" min="1" step="any"><i>mm</i></span></label>
+        <label class="num"><span>U-bolt from plate end</span><span class="in"><input type="number" id="subIn" data-k="ubIn" min="0" step="any"><i>mm</i></span></label>
+        <label class="num"><span>U-bolt rod diameter</span><span class="in"><input type="number" id="srod" data-k="rod" min="0" step="any"><i>mm</i></span></label>
+        <button class="linkbtn" id="sReset" type="button">Reset the structure to the example values</button>
+      </div>
+    </aside>
+
+    <section class="results" aria-label="Structure results">
+      <div class="card panel">
+        <div class="panel-h">
+          <h3>Elevation</h3><span class="sub">Positions in mm from the outer face of the left pillar</span>
+          <span class="right legend">
+            <span><i class="sx"></i>Members</span><span><i class="sx i"></i>I attachment</span><span><i class="sx b"></i>Bracket line</span>
+            <span><i class="sx g"></i>Gutter line</span><span><i class="sx c"></i>Culture line</span><span><i class="sx w"></i>To check</span>
+          </span>
+        </div>
+        <div class="tblwrap"><div class="dwgbox" id="sOverall"></div></div>
+        <p class="hint" id="sExample">Example values. Replace them with your truss dimensions.</p>
+      </div>
+
+      <div class="card panel">
+        <div class="panel-h"><h3>3D view</h3><span class="sub">Left drag pans, right drag turns, the wheel zooms</span></div>
+        <div class="view3d" id="s3dWrap"><div class="v3host" id="s3d" role="img" aria-label="3D view of one truss with its pillars, lines and I attachments"></div>
+          <div class="v3bar seg small" id="s3dBar"><button type="button" data-view="iso">3D</button><button type="button" data-view="front">Front</button><button type="button" data-view="side">Side</button><button type="button" data-view="top">Top</button><button type="button" id="s3dFull">Full screen</button></div>
+        </div>
+        <p class="hint">The I bar runs down to the Voltiris cross profile. Culture lines are drawn 0.35 m long: their length is not set yet.</p>
+      </div>
+
+      <div class="card panel">
+        <div class="panel-h"><h3>Details</h3><span class="sub">The truss is symmetric about the middle reinforcement</span></div>
+        <div class="details">
+          <div><h4>Middle</h4><div class="tblwrap"><div class="dwgbox" id="sMid"></div></div></div>
+          <div><h4>Left end</h4><div class="tblwrap"><div class="dwgbox" id="sEnd"></div></div></div>
+          <div class="ipanel" id="sIPanel">
+            <div class="ihead"><h4>I attachment</h4>
+              <div class="inav"><button type="button" class="btn" id="sIPrev" aria-label="Previous I">‹ Previous</button><span id="sILbl"></span><button type="button" class="btn" id="sINext" aria-label="Next I">Next ›</button></div></div>
+            <div class="tblwrap"><div class="dwgbox" id="sI"></div></div>
+            <p class="hint" id="sICap"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card panel">
+        <div class="panel-h"><h3>Key dimensions</h3><span class="right" id="sStatus"></span></div>
+        <div class="kf" id="sKf"></div>
+      </div>
+
+      <div class="card panel" id="sLinesCard">
+        <div class="panel-h"><h3>Module lines</h3><span class="sub" id="sSum"></span></div>
+        <p class="hint">Left to right. Positions in mm from the outer face of the left pillar; spacing is centre to centre between module lines.</p>
+        <div class="tblwrap"><table class="t lines" id="sTable"></table></div>
+      </div>
+
+      <div class="card panel">
+        <div class="panel-h"><h3>Checks</h3></div>
+        <ul class="checks" id="sChecks"></ul>
+      </div>
+    </section>
+  </main>
+  <div class="tabnav"><span></span><button class="btn primary" type="button" data-goto="voltiris">Next: Voltiris →</button></div>
+</section>
+
+<!-- =============================================================== 2 VOLTIRIS -->
+<section class="tabpanel" id="panel-voltiris" role="tabpanel" aria-labelledby="tab-voltiris" hidden>
+  <main class="app">
+    <aside class="settings" aria-label="Voltiris settings">
+      <div class="card step">
+        <h2><span class="n">1</span>Voltiris modules</h2>
+        <label class="switch"><input type="checkbox" id="vOn"> <span>Voltiris modules installed</span></label>
+        <div class="field" id="vPoseField">
+          <span class="lbl">Module position at night</span>
+          <div class="seg" role="group" aria-label="Module position at night" id="vPose">
+            <button type="button" data-pose="park" aria-pressed="true">Parked at 60°</button>
+            <button type="button" data-pose="flat" aria-pressed="false">Flat</button>
+          </div>
+          <p class="hint">At night the modules can tilt out of the LED light. 60° is the steepest position that stays inside the module's own space.</p>
+        </div>
+      </div>
+      <div class="card step">
+        <h2><span class="n">2</span>Module lines</h2>
+        <p class="hint" id="vLinesNote"></p>
+        <button class="linkbtn" type="button" data-goto="structure">Change them in the Structure tab</button>
+      </div>
+      <div class="card step">
+        <h2><span class="n">3</span>Modules along each line</h2>
+        <p class="hint">Two modules per line in every truss bay. Lines alternate between positions A and B over the whole greenhouse; with 5 lines per chapel the pattern repeats every two chapels.</p>
+        <dl class="kv" id="vPattern"></dl>
+      </div>
+    </aside>
+
+    <section class="results" aria-label="Voltiris results">
+      <div class="kpis">
+        <div class="card kpi"><span class="k">Module lines</span><span class="v" id="vK1">–</span><span class="s">bracket line and I attachments</span></div>
+        <div class="card kpi"><span class="k">Modules</span><span class="v" id="vK2">–</span><span class="s">two per line in each bay</span></div>
+        <div class="card kpi"><span class="k">Module density</span><span class="v" id="vK3">–</span><span class="s">over the whole greenhouse</span></div>
+        <div class="card kpi"><span class="k">Smallest line spacing</span><span class="v" id="vK4">–</span><span class="s" id="vS4"></span></div>
+      </div>
+      <div class="card panel">
+        <div class="panel-h"><h3>Greenhouse in 3D</h3><span class="sub">Three chapels and two truss bays, modules at their night position</span></div>
+        <div class="view3d" id="v3dWrap"><div class="v3host" id="v3d" role="img" aria-label="3D view of the greenhouse with pillars, trusses, I attachments, brackets and Voltiris modules"></div>
+          <div class="v3bar seg small" id="v3dBar"><button type="button" data-view="iso" aria-pressed="true">3D</button><button type="button" data-view="section" aria-pressed="false">Along the truss</button><button type="button" data-view="top" aria-pressed="false">Top</button><button type="button" id="v3dFull">Full screen</button></div>
+        </div>
+        <div class="legend3d"><span><i style="background:#9aa7b8"></i>Truss and pillars</span><span><i style="background:#00a88a"></i>I attachment</span><span><i style="background:#00745f"></i>Bracket</span><span><i style="background:#40598a"></i>Gutter line</span><span><i style="background:#8fbaf5"></i>Lamellas</span><span><i style="background:#3a4757"></i>Module frame and tracker</span></div>
+      </div>
+      <div class="card panel">
+        <div class="panel-h"><h3>Module lines</h3><span class="sub">x in m from the outer face of the left pillar</span></div>
+        <div class="tblwrap"><table class="t" id="vTable">
+          <thead><tr><th>Line</th><th>Held by</th><th class="n">x, m</th><th class="n">Spacing, m</th><th>Positions, chapel 1 / 2</th><th class="n">Modules along the bay (chapel 1), m from the truss</th></tr></thead>
+          <tbody></tbody>
+        </table></div>
+      </div>
+      <div class="card panel">
+        <div class="panel-h"><h3>Checks</h3></div>
+        <ul class="checks" id="vChecks"></ul>
+      </div>
+    </section>
+  </main>
+  <div class="tabnav"><button class="btn" type="button" data-goto="structure">← Structure</button><button class="btn primary" type="button" data-goto="leds">Next: LEDs →</button></div>
+</section>
+
+<!-- =============================================================== 3 LEDS -->
+<section class="tabpanel" id="panel-leds" role="tabpanel" aria-labelledby="tab-leds" hidden>
+  <main class="app">
+    <aside class="settings" aria-label="LED settings">
+      <div class="card step">
+        <h2><span class="n">1</span>Greenhouse</h2>
+        <p class="hint" id="ledGh"></p>
+        <button class="linkbtn" type="button" data-goto="structure">Change the greenhouse in the Structure tab</button>
+      </div>
+
+      <div class="card step" id="stepLed">
+        <h2><span class="n">2</span>LEDs</h2>
+        <div class="ledcard" id="ledCard">
+          <div>
+            <div class="brand" id="ledBrand"></div>
+            <div class="model" id="ledModel"></div>
+            <dl id="ledSpecs"></dl>
+          </div>
+          <canvas id="ledPolar" width="172" height="124" role="img" aria-label="Beam shape of the selected optic"></canvas>
+        </div>
+        <div class="ledlinks"><button type="button" class="linkbtn" id="chooseLed">Choose another LED</button><a id="ledSrc" href="#" target="_blank" rel="noopener">Datasheet</a><button type="button" class="linkbtn" id="beamInfo">Beam shape</button></div>
+        <div class="field" id="variantField"><label for="ledVariant">Version and optic</label><select id="ledVariant"></select></div>
+        <div class="field" id="customFields" hidden>
+          <div class="row2">
+            <div class="field"><label for="cPpf">PPF, µmol/s</label><input type="number" id="cPpf" min="100" max="8000" step="10"></div>
+            <div class="field"><label for="cW">Power, W</label><input type="number" id="cW" min="50" max="2500" step="5"></div>
+          </div>
+          <div class="row2">
+            <div class="field"><label for="cAngle">Beam angle, °</label><input type="number" id="cAngle" min="60" max="170" step="1"></div>
+            <div class="field"><label for="cLen">Length × width, mm</label><input type="text" id="cLen" inputmode="numeric" placeholder="1000 × 170"></div>
+          </div>
+        </div>
+        <div class="field">
+          <span class="lbl">Where they hang</span>
+          <div class="seg" role="group" aria-label="Where the LEDs hang">
+            <button type="button" data-mount="truss" aria-pressed="true">On the truss</button>
+            <button type="button" data-mount="below" aria-pressed="false">Below Voltiris</button>
+          </div>
+        </div>
+        <div class="field" id="heightField"><label for="ledH">Height above the crop <output id="ledHo"></output></label><input type="range" id="ledH" min="1" max="4" step="0.05"></div>
+        <div class="field">
+          <span class="lbl">LEDs per truss in each chapel</span>
+          <div class="seg" role="group" aria-label="LEDs per truss in each chapel" id="perBaySeg">
+            <button type="button" data-n="1" aria-pressed="false">1</button>
+            <button type="button" data-n="2" aria-pressed="true">2</button>
+            <button type="button" data-n="3" aria-pressed="false">3</button>
+            <button type="button" data-n="4" aria-pressed="false">4</button>
+          </div>
+        </div>
+        <div class="field">
+          <span class="lbl">Positions across the chapel</span>
+          <div class="seg" role="group" aria-label="LED positions across the chapel" id="posSeg">
+            <button type="button" data-pos="centred" aria-pressed="true">Centred</button>
+            <button type="button" data-pos="even" aria-pressed="false">Most even</button>
+            <button type="button" data-pos="manual" aria-pressed="false">Manual</button>
+          </div>
+          <div class="posrow" id="posFields" hidden></div>
+          <p class="hint" id="posNote"></p>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="ledDim">Output <output id="ledDimo"></output></label><input type="range" id="ledDim" min="30" max="100" step="5"></div>
+          <div class="field"><label for="ledHours">Light hours <output id="ledHourso"></output></label><input type="range" id="ledHours" min="4" max="20" step="1"></div>
+        </div>
+        <label class="switch"><input type="checkbox" id="ledRot"> <span>Turn fixtures 90° (long side across the truss)</span></label>
+        <div class="field">
+          <label for="iesFile">Photometric file (optional)</label>
+          <input type="file" id="iesFile" accept=".ies,.ldt,.txt">
+          <p class="hint" id="iesNote">Load the supplier's IES or LDT file to replace the beam shape. The PPF stays as set above.</p>
+        </div>
+        <p class="warnbox" id="ledWarn" hidden></p>
+      </div>
+    </aside>
+
+    <section class="results" aria-label="Light results">
+      <div class="kpis">
+        <div class="card kpi" id="kpiPpfd"><span class="k">Light on the crop</span><span class="v" id="vPpfd">–</span><span class="s" id="sPpfd"></span><button class="info" type="button" data-pop="ppfd" aria-label="How the light on the crop is calculated">i</button></div>
+        <div class="card kpi" id="kpiU"><span class="k">Uniformity</span><span class="v" id="vU">–</span><span class="s" id="sU"></span><button class="info" type="button" data-pop="u" aria-label="How uniformity is calculated">i</button></div>
+        <div class="card kpi" id="kpiDli"><span class="k">Daily light</span><span class="v" id="vDli">–</span><span class="s" id="sDli"></span><button class="info" type="button" data-pop="dli" aria-label="How the daily light integral is calculated">i</button></div>
+        <div class="card kpi" id="kpiLost"><span class="k">Blocked by Voltiris</span><span class="v" id="vLost">–</span><span class="s" id="sLost"></span><button class="info" type="button" data-pop="lost" aria-label="How the blocked light is calculated">i</button></div>
+      </div>
+
+      <div class="card panel" id="view3dCard">
+        <div class="panel-h">
+          <h3>3D view</h3><span class="sub">Left drag pans, right drag turns, the wheel zooms</span>
+        </div>
+        <div class="view3d" id="view3dWrap"><div class="v3host" id="view3d" role="img" aria-label="3D view of the greenhouse with trusses, Voltiris modules, LEDs, the rays of one LED and the light on the crop"></div>
+          <div class="v3bar seg small" id="viewSeg"><button type="button" data-view="3d" aria-pressed="true">3D</button><button type="button" data-view="section" aria-pressed="false">Along the truss</button><button type="button" data-view="top" aria-pressed="false">Top</button><button type="button" id="view3dFull">Full screen</button></div>
+        </div>
+        <div class="legend3d"><span><i style="background:#e8590c"></i>LED</span><span><i style="background:#ffb000"></i>Ray that reaches the crop</span><span><i style="background:#ff2d55"></i>Ray that ends on a Voltiris part</span><span><i style="background:#8fbaf5"></i>Lamellas (pass PAR)</span><span><i style="background:#3a4757"></i>Opaque parts</span></div>
+      </div>
+
+      <div class="card panel">
+        <div class="panel-h">
+          <h3>Section</h3><span class="sub" id="secSub"></span>
+          <span class="right"><span><span class="sw" style="background:var(--accent)"></span>LED light</span><button class="info" style="position:static" type="button" data-pop="section" aria-label="How to read the section">i</button></span>
+        </div>
+        <div class="canvas-box"><canvas id="secCanvas" role="img" aria-label="Cross-section of one chapel with truss, Voltiris modules, LEDs, their light and the crop"></canvas></div>
+      </div>
+
+      <div class="twocol">
+        <div class="card panel">
+          <div class="panel-h">
+            <h3>Light on the crop</h3><span class="sub" id="mapSub"></span>
+            <span class="right"><button class="info" style="position:static" type="button" data-pop="map" aria-label="How to read the light map">i</button></span>
+          </div>
+          <div class="canvas-box" id="mapBox"><canvas id="mapCanvas" role="img" aria-label="Map of the light on the crop over one chapel and one truss bay"></canvas><div class="tip" id="mapTip" hidden></div></div>
+          <div class="legend"><span id="legMin"></span><canvas class="bar" id="legBar" width="280" height="18"></canvas><span id="legMax"></span><span>µmol/m²s</span><span style="margin-left:auto">Click a spot to see its calculation</span></div>
+        </div>
+        <div class="card panel">
+          <div class="panel-h">
+            <h3>Where to hang them</h3><span class="sub">Same LEDs, three cases</span>
+            <span class="right"><button class="info" style="position:static" type="button" data-pop="compare" aria-label="About this comparison">i</button></span>
+          </div>
+          <div class="tblwrap"><table class="t" id="cmpTable">
+            <thead><tr><th>Case</th><th class="n">To the crop</th><th class="n">Light</th><th class="n">Uniformity</th><th class="n">Blocked</th></tr></thead>
+            <tbody></tbody>
+          </table></div>
+          <p class="hint" id="cmpNote">Light in µmol/m²s on the top of the crop. Uniformity is the darkest spot divided by the average.</p>
+          <div class="formula" id="powerLine"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <section class="below" aria-label="LED datasheets and method">
+    <div class="card panel" id="library">
+      <div class="panel-h"><h3>LED datasheets</h3><span class="sub">Public data from each maker. Click a row to simulate it.</span></div>
+      <div class="chips" id="brandChips" role="group" aria-label="Filter by brand"></div>
+      <div class="tblwrap"><table class="t" id="libTable">
+        <thead><tr><th>Maker</th><th>Fixture</th><th class="n">PPF µmol/s</th><th class="n">Power W</th><th class="n">µmol/J</th><th class="n">Size mm</th><th class="n">kg</th><th>Optics</th><th>Beam data</th><th>Source</th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+    </div>
+    <div class="card panel">
+      <div class="panel-h"><h3>How the simulation works</h3></div>
+      <div class="method">
+        <div>
+          <h4>Every ray, every LED</h4>
+          <p>The face of each nearby LED is split into up to 15 × 2 points, so thin Voltiris parts cast the soft shadow a real fixture casts. From each point, rays leave in every direction below the fixture, weighted by the beam shape. The light on a spot of the crop adds up the rays of all LEDs within six chapels and eight truss bays.</p>
+          <div class="formula"><span class="lhs">E =</span> Σ Φ · I(γ, C) · T(γ, C) · cos γ / d²</div>
+        </div>
+        <div>
+          <h4>Voltiris parts cast shadows</h4>
+          <p>The module, receiver, tracker, I-structure, profile, rods and optimisers are boxes taken from our 3D model, placed on the module lines of the Structure tab. A ray that hits one is stopped (T = 0). The lamellas let PAR through. With Voltiris off, the same LEDs give the reference.</p>
+        </div>
+        <div>
+          <h4>Beam shapes</h4>
+          <p>Most makers publish only a beam angle. We then use the smooth curve with half its peak at that angle (cosⁿ γ). Where a measured curve exists we use it, and you can load an IES or LDT file. Real optics can be wider than the smooth curve: ask the maker for the file.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="tabnav"><button class="btn" type="button" data-goto="voltiris">← Voltiris</button><span></span></div>
+</section>
+
+</div>
+
+<footer class="foot"><div class="wrap"><span>Voltiris SA · Lausanne · GH design, for planning. Geometry only, no structural verification. Light results are estimates; check the light plan with your LED supplier.</span><span id="buildInfo"></span></div></footer>
+
+<dialog class="pop" id="pop" aria-labelledby="popTitle">
+  <div class="pop-h"><h3 id="popTitle"></h3><button class="x" type="button" id="popClose" aria-label="Close">×</button></div>
+  <div class="pop-b" id="popBody"></div>
+</dialog>
+
+<script src="vendor/jspdf.umd.min.js"></script>
+<script src="vendor/jspdf.plugin.autotable.min.js"></script>
+<script src="vendor/three.min.js"></script>
+<script src="vendor/OrbitControls.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

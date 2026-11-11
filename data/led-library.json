@@ -1,0 +1,457 @@
+{
+ "sources": {
+  "mx": {
+   "name": "MechaTronix CoolStack brochure, version 8.2",
+   "url": "https://stpsprodwe.blob.core.windows.net/media-blobs/9ecd572a66f8dca395d7162945d2d4ce.pdf"
+  },
+  "sigF": {
+   "name": "Signify, GreenPower LED toplighting force 2.0 specifications, 2024-09",
+   "url": "https://assets.signify.com/is/content/Signify/Assets/philips-lighting/canada/Philips-GreenPower-LED-Toplighting-Force-2.0-specifications-2024-09.pdf"
+  },
+  "sigC": {
+   "name": "Signify, GreenPower LED technical specifications, 2023-12",
+   "url": "https://assets.signify.com/is/content/Signify/Assets/philips-lighting/united-states/20231211-philips-led-toplighting-compact-2023-12-tech-specs.pdf"
+  },
+  "red": {
+   "name": "RED Horticulture, RED T series datasheet",
+   "url": "https://www.horticulture.red/wp-content/uploads/2023/11/DS_gamme_redT_V2_EN-.pdf"
+  },
+  "flu4": {
+   "name": "Fluence, VYPR 4 series sell sheet, 2024-02",
+   "url": "https://fluence-led.com/wp-content/uploads/2024/02/FLU-SellSheet_VYPR4_022024-P.pdf"
+  },
+  "flu3": {
+   "name": "Fluence, VYPR 3p EU spec sheet, 2024-03",
+   "url": "https://fluence-led.com/wp-content/uploads/2024/11/FLU-SpecSheet_VYPR3p_EU_A4_032024-D.pdf"
+  },
+  "agl": {
+   "name": "Agrolux (Gavita International), WEGA datasheet, 2026-04",
+   "url": "https://stpsprodwe.blob.core.windows.net/media-blobs/d9783022781b167b35224ccf56e35743.pdf"
+  }
+ },
+ "fixtures": [
+  {
+   "id": "mx-maxpro",
+   "brand": "MechaTronix",
+   "model": "CoolStack MAX PRO",
+   "size": [
+    1000,
+    170,
+    161
+   ],
+   "kg": 11.6,
+   "src": "mx",
+   "wattTxt": "1,030–1,250",
+   "variants": [
+    {
+     "label": "Wide beam optic, 150°",
+     "ppf": 5100,
+     "watt": 1250,
+     "eff": "3.5–4.0",
+     "beam": {
+      "angle": 150
+     }
+    },
+    {
+     "label": "Standard optic, 120°",
+     "ppf": 5100,
+     "watt": 1250,
+     "eff": "3.5–4.0",
+     "beam": {
+      "angle": 120
+     }
+    }
+   ],
+   "note": "Up to 5,100 µmol/s at 1,030 to 1,250 W. The brochure gives beam angles only, and no PPF per optic."
+  },
+  {
+   "id": "mx-compactpro",
+   "brand": "MechaTronix",
+   "model": "CoolStack COMPACT PRO",
+   "size": [
+    515,
+    170,
+    161
+   ],
+   "kg": 5.7,
+   "src": "mx",
+   "wattTxt": "400–620",
+   "variants": [
+    {
+     "label": "Wide beam optic, 150°",
+     "ppf": 2550,
+     "watt": 620,
+     "eff": "3.5–4.0",
+     "beam": {
+      "angle": 150
+     }
+    },
+    {
+     "label": "Standard optic, 120°",
+     "ppf": 2550,
+     "watt": 620,
+     "eff": "3.5–4.0",
+     "beam": {
+      "angle": 120
+     }
+    }
+   ],
+   "note": "Up to 2,550 µmol/s at 400 to 620 W."
+  },
+  {
+   "id": "sig-tlf20-qb",
+   "brand": "Signify",
+   "model": "Toplighting force 2.0 · TLF20 3600 3.5 RWMB QB",
+   "size": [
+    690,
+    310,
+    112
+   ],
+   "kg": 10.5,
+   "src": "sigF",
+   "variants": [
+    {
+     "label": "Quadro beam 150 × 135°, measured curve",
+     "ppf": 3600,
+     "watt": 1040,
+     "eff": "3.5",
+     "beam": {
+      "curve": "tlf20"
+     }
+    }
+   ],
+   "note": "12NC 9290 039 65067. Beam read at 1° steps from Signify's DIALux curve of this fixture."
+  },
+  {
+   "id": "sig-tlf20-sb",
+   "brand": "Signify",
+   "model": "Toplighting force 2.0 · TLF20 3700 3.6 RWMB SB",
+   "size": [
+    690,
+    310,
+    112
+   ],
+   "kg": 10.5,
+   "src": "sigF",
+   "variants": [
+    {
+     "label": "Standard beam 120°",
+     "ppf": 3700,
+     "watt": 1040,
+     "eff": "3.6",
+     "beam": {
+      "angle": 120
+     }
+    }
+   ],
+   "note": "277–400 V."
+  },
+  {
+   "id": "sig-tlf20-400",
+   "brand": "Signify",
+   "model": "Toplighting force 2.0 · TLF20 5150 3.7 RWLB 400V SB",
+   "size": [
+    690,
+    310,
+    112
+   ],
+   "kg": 10.5,
+   "src": "sigF",
+   "variants": [
+    {
+     "label": "Standard beam 120°",
+     "ppf": 5150,
+     "watt": 1408,
+     "eff": "3.7",
+     "beam": {
+      "angle": 120
+     }
+    }
+   ],
+   "note": "400 V version."
+  },
+  {
+   "id": "sig-tlc",
+   "brand": "Signify",
+   "model": "Toplighting compact 1.3 · TLC DRW_LB",
+   "size": [
+    720,
+    240,
+    90
+   ],
+   "kg": 10.5,
+   "src": "sigC",
+   "variants": [
+    {
+     "label": "TLC 2600, standard beam 120°",
+     "ppf": 2600,
+     "watt": 770,
+     "eff": "3.4",
+     "beam": {
+      "angle": 120
+     }
+    },
+    {
+     "label": "TLC 2200, wide beam 150°",
+     "ppf": 2200,
+     "watt": 645,
+     "eff": "3.4",
+     "beam": {
+      "angle": 150
+     }
+    }
+   ],
+   "note": "277–400 V versions."
+  },
+  {
+   "id": "sig-tll",
+   "brand": "Signify",
+   "model": "Toplighting linear 2.2 · TLL 800 DRW_LB",
+   "size": [
+    1260,
+    55,
+    80
+   ],
+   "kg": 3.2,
+   "src": "sigC",
+   "variants": [
+    {
+     "label": "Beam 120°",
+     "ppf": 800,
+     "watt": 250,
+     "eff": "3.2",
+     "beam": {
+      "angle": 120
+     }
+    }
+   ],
+   "note": "277–400 V."
+  },
+  {
+   "id": "red-t1010",
+   "brand": "RED Horticulture",
+   "model": "RED T1010",
+   "size": [
+    1180,
+    159,
+    172
+   ],
+   "kg": 14,
+   "src": "red",
+   "variants": [
+    {
+     "label": "Standard beam 115°",
+     "ppf": 3542,
+     "watt": 1012,
+     "eff": "3.5",
+     "beam": {
+      "angle": 115
+     }
+    },
+    {
+     "label": "Wide beam 140°",
+     "ppf": 3542,
+     "watt": 1012,
+     "eff": "3.5",
+     "beam": {
+      "angle": 140
+     }
+    }
+   ],
+   "note": "Maximum PPF. RED's web page says 115° or 150°; the datasheet 115° and 140°."
+  },
+  {
+   "id": "red-t680",
+   "brand": "RED Horticulture",
+   "model": "RED T680",
+   "size": [
+    628,
+    159,
+    172
+   ],
+   "kg": 9,
+   "src": "red",
+   "variants": [
+    {
+     "label": "Standard beam 115°",
+     "ppf": 2387,
+     "watt": 682,
+     "eff": "3.5",
+     "beam": {
+      "angle": 115
+     }
+    },
+    {
+     "label": "Wide beam 140°",
+     "ppf": 2387,
+     "watt": 682,
+     "eff": "3.5",
+     "beam": {
+      "angle": 140
+     }
+    }
+   ],
+   "note": "Maximum PPF."
+  },
+  {
+   "id": "flu-vypr4i",
+   "brand": "Fluence",
+   "model": "VYPR 4i · BROAD R9 High Efficiency",
+   "size": [
+    1170,
+    107,
+    91
+   ],
+   "kg": 5.3,
+   "src": "flu4",
+   "variants": [
+    {
+     "label": "Clear glass, Lambertian",
+     "ppf": 3000,
+     "watt": 800,
+     "eff": "3.6",
+     "beam": {
+      "angle": 120
+     }
+    }
+   ],
+   "note": "A wide beam optic exists (2,840 µmol/s) but its angle is not published. Weight without the power supply."
+  },
+  {
+   "id": "flu-vypr3p",
+   "brand": "Fluence",
+   "model": "VYPR 3p · DUAL R9B High Efficacy",
+   "size": [
+    1071,
+    74,
+    82
+   ],
+   "kg": 3.5,
+   "src": "flu3",
+   "variants": [
+    {
+     "label": "Beam 120°",
+     "ppf": 2330,
+     "watt": 624,
+     "eff": "3.7",
+     "beam": {
+      "angle": 120
+     }
+    }
+   ],
+   "note": "Power at 230 V. Weight without the power supply."
+  },
+  {
+   "id": "agl-max",
+   "brand": "Agrolux",
+   "model": "WEGA Max HE, single channel",
+   "size": [
+    560,
+    330,
+    140
+   ],
+   "kg": 15.7,
+   "src": "agl",
+   "variants": [
+    {
+     "label": "Optic 125°",
+     "ppf": 4000,
+     "watt": 1040,
+     "eff": "3.85",
+     "beam": {
+      "angle": 125
+     }
+    }
+   ],
+   "note": "Agrolux is a Gavita International brand."
+  },
+  {
+   "id": "agl-plus",
+   "brand": "Agrolux",
+   "model": "WEGA Plus HE, single channel",
+   "size": [
+    560,
+    330,
+    140
+   ],
+   "kg": 13.4,
+   "src": "agl",
+   "variants": [
+    {
+     "label": "Optic 125°",
+     "ppf": 2900,
+     "watt": 760,
+     "eff": "3.8",
+     "beam": {
+      "angle": 125
+     }
+    },
+    {
+     "label": "Optic 150°",
+     "ppf": 2850,
+     "watt": 760,
+     "eff": "3.75",
+     "beam": {
+      "angle": 150
+     }
+    }
+   ]
+  },
+  {
+   "id": "agl-eco",
+   "brand": "Agrolux",
+   "model": "WEGA Eco",
+   "size": [
+    320,
+    280,
+    175
+   ],
+   "kg": 8.7,
+   "src": "agl",
+   "variants": [
+    {
+     "label": "Optic 125°",
+     "ppf": 1900,
+     "watt": 540,
+     "eff": "3.5",
+     "beam": {
+      "angle": 125
+     }
+    },
+    {
+     "label": "Optic 150°",
+     "ppf": 1850,
+     "watt": 540,
+     "eff": "3.4",
+     "beam": {
+      "angle": 150
+     }
+    }
+   ]
+  },
+  {
+   "id": "custom",
+   "brand": "Your LED",
+   "model": "Custom fixture",
+   "custom": true,
+   "size": [
+    1000,
+    170,
+    120
+   ],
+   "kg": null,
+   "src": null,
+   "variants": [
+    {
+     "label": "Your numbers",
+     "ppf": 3000,
+     "watt": 900,
+     "eff": null,
+     "beam": {
+      "angle": 120
+     }
+    }
+   ]
+  }
+ ]
+}

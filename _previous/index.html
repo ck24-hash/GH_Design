@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Voltiris LED Lab</title>
+<meta name="description" content="Plan greenhouse grow lights with Voltiris modules: pick an LED, set the greenhouse, see the light on the crop and download a PDF report.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23001D3B%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%276%27 fill=%27%2300C9A5%27/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <span class="logo" role="img" aria-label="Voltiris"></span>
+    <div class="brandline">
+      <h1>LED <span>lab</span></h1>
+      <p>Grow lights with Voltiris modules: how much light reaches the crop, and how even it is.</p>
+    </div>
+    <div class="hdr-actions">
+      <span class="status" id="status" role="status"><i></i><span>Ready</span></span>
+      <button class="btn primary" id="pdfBtn" type="button">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v8m0 0 3-3m-3 3L5 7M3 12.5h10"/></svg>
+        PDF report
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <main class="app">
+    <aside class="settings" aria-label="Settings">
+      <div class="card step" id="stepGh">
+        <h2><span class="n">1</span>Greenhouse<span class="aside">Venlo</span></h2>
+        <div class="field">
+          <label for="ghPreset">Type</label>
+          <select id="ghPreset"></select>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="ghW">Chapel width <output id="ghWo"></output></label><input type="range" id="ghW" min="6.4" max="12.8" step="0.01"></div>
+          <div class="field"><label for="ghL">Truss spacing <output id="ghLo"></output></label><input type="range" id="ghL" min="4" max="5" step="0.5"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="ghTop">Truss top <output id="ghTopo"></output></label><input type="range" id="ghTop" min="4.5" max="7.5" step="0.01"></div>
+          <div class="field"><label for="ghDepth">Truss depth <output id="ghDeptho"></output></label><input type="range" id="ghDepth" min="0.3" max="1.0" step="0.01"></div>
+        </div>
+        <div class="field"><label for="ghCrop">Top of the crop <output id="ghCropo"></output></label><input type="range" id="ghCrop" min="0.3" max="3.5" step="0.05"></div>
+      </div>
+
+      <div class="card step" id="stepVolt">
+        <h2><span class="n">2</span>Voltiris<span class="aside" id="voltLines"></span></h2>
+        <label class="switch"><input type="checkbox" id="voltOn" checked> <span>Voltiris modules installed</span></label>
+        <div class="field" id="poseField">
+          <span class="lbl">Module position at night</span>
+          <div class="seg" role="group" aria-label="Module position at night">
+            <button type="button" data-pose="park" aria-pressed="true">Parked at 60°</button>
+            <button type="button" data-pose="flat" aria-pressed="false">Flat</button>
+          </div>
+          <p class="hint">At night the modules can tilt out of the LED light. 60° is the steepest position that stays inside the module's own space.</p>
+        </div>
+        <div class="field" id="linesField">
+          <span class="lbl">Module lines per chapel</span>
+          <div class="seg" role="group" aria-label="Module lines per chapel" id="linesSeg">
+            <button type="button" data-lines="4" aria-pressed="false">4</button>
+            <button type="button" data-lines="5" aria-pressed="true">5</button>
+            <button type="button" data-lines="6" aria-pressed="false">6</button>
+          </div>
+        </div>
+        <div class="field" id="offField"><label for="voltOff">First module line (I) from the column <output id="voltOffo"></output></label><input type="range" id="voltOff" min="0" max="1.7" step="0.01"></div>
+      </div>
+
+      <div class="card step" id="stepLed">
+        <h2><span class="n">3</span>LEDs</h2>
+        <div class="ledcard" id="ledCard">
+          <div>
+            <div class="brand" id="ledBrand"></div>
+            <div class="model" id="ledModel"></div>
+            <dl id="ledSpecs"></dl>
+          </div>
+          <canvas id="ledPolar" width="172" height="124" role="img" aria-label="Beam shape of the selected optic"></canvas>
+        </div>
+        <div class="ledlinks"><button type="button" class="linkbtn" id="chooseLed">Choose another LED</button><a id="ledSrc" href="#" target="_blank" rel="noopener">Datasheet</a><button type="button" class="linkbtn" id="beamInfo">Beam shape</button></div>
+        <div class="field" id="variantField"><label for="ledVariant">Version and optic</label><select id="ledVariant"></select></div>
+        <div class="field" id="customFields" hidden>
+          <div class="row2">
+            <div class="field"><label for="cPpf">PPF, µmol/s</label><input type="number" id="cPpf" min="100" max="8000" step="10"></div>
+            <div class="field"><label for="cW">Power, W</label><input type="number" id="cW" min="50" max="2500" step="5"></div>
+          </div>
+          <div class="row2">
+            <div class="field"><label for="cAngle">Beam angle, °</label><input type="number" id="cAngle" min="60" max="170" step="1"></div>
+            <div class="field"><label for="cLen">Length × width, mm</label><input type="text" id="cLen" inputmode="numeric" placeholder="1000 × 170"></div>
+          </div>
+        </div>
+        <div class="field">
+          <span class="lbl">Where they hang</span>
+          <div class="seg" role="group" aria-label="Where the LEDs hang">
+            <button type="button" data-mount="truss" aria-pressed="true">On the truss</button>
+            <button type="button" data-mount="below" aria-pressed="false">Below Voltiris</button>
+          </div>
+        </div>
+        <div class="field" id="heightField"><label for="ledH">Height above the crop <output id="ledHo"></output></label><input type="range" id="ledH" min="1" max="4" step="0.05"></div>
+        <div class="field">
+          <span class="lbl">LEDs per truss in each chapel</span>
+          <div class="seg" role="group" aria-label="LEDs per truss in each chapel" id="perBaySeg">
+            <button type="button" data-n="1" aria-pressed="false">1</button>
+            <button type="button" data-n="2" aria-pressed="true">2</button>
+            <button type="button" data-n="3" aria-pressed="false">3</button>
+            <button type="button" data-n="4" aria-pressed="false">4</button>
+          </div>
+        </div>
+        <div class="field">
+          <span class="lbl">Positions across the chapel</span>
+          <div class="seg" role="group" aria-label="LED positions across the chapel" id="posSeg">
+            <button type="button" data-pos="centred" aria-pressed="true">Centred</button>
+            <button type="button" data-pos="even" aria-pressed="false">Most even</button>
+            <button type="button" data-pos="manual" aria-pressed="false">Manual</button>
+          </div>
+          <div class="posrow" id="posFields" hidden></div>
+          <p class="hint" id="posNote"></p>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="ledDim">Output <output id="ledDimo"></output></label><input type="range" id="ledDim" min="30" max="100" step="5"></div>
+          <div class="field"><label for="ledHours">Light hours <output id="ledHourso"></output></label><input type="range" id="ledHours" min="4" max="20" step="1"></div>
+        </div>
+        <label class="switch"><input type="checkbox" id="ledRot"> <span>Turn fixtures 90° (long side across the truss)</span></label>
+        <div class="field">
+          <label for="iesFile">Photometric file (optional)</label>
+          <input type="file" id="iesFile" accept=".ies,.ldt,.txt">
+          <p class="hint" id="iesNote">Load the supplier's IES or LDT file to replace the beam shape. The PPF stays as set above.</p>
+        </div>
+        <p class="warnbox" id="ledWarn" hidden></p>
+      </div>
+
+      <div class="card step" id="stepReport">
+        <h2><span class="n">4</span>Report</h2>
+        <div class="field"><label for="projName">Project name</label><input type="text" id="projName" maxlength="60"></div>
+        <button class="btn primary" type="button" id="pdfBtn2">Download the PDF report</button>
+        <p class="hint" id="pdfNote">Two pages: results, settings, light map, section, the calculation and the LED datasheet.</p>
+      </div>
+    </aside>
+
+    <section class="results" aria-label="Results">
+      <div class="kpis">
+        <div class="card kpi" id="kpiPpfd"><span class="k">Light on the crop</span><span class="v" id="vPpfd">–</span><span class="s" id="sPpfd"></span><button class="info" type="button" data-pop="ppfd" aria-label="How the light on the crop is calculated">i</button></div>
+        <div class="card kpi" id="kpiU"><span class="k">Uniformity</span><span class="v" id="vU">–</span><span class="s" id="sU"></span><button class="info" type="button" data-pop="u" aria-label="How uniformity is calculated">i</button></div>
+        <div class="card kpi" id="kpiDli"><span class="k">Daily light</span><span class="v" id="vDli">–</span><span class="s" id="sDli"></span><button class="info" type="button" data-pop="dli" aria-label="How the daily light integral is calculated">i</button></div>
+        <div class="card kpi" id="kpiLost"><span class="k">Blocked by Voltiris</span><span class="v" id="vLost">–</span><span class="s" id="sLost"></span><button class="info" type="button" data-pop="lost" aria-label="How the blocked light is calculated">i</button></div>
+      </div>
+
+      <div class="card panel" id="view3dCard">
+        <div class="panel-h">
+          <h3>3D view</h3><span class="sub">Drag to turn, scroll or pinch to zoom</span>
+          <span class="right"><span class="seg small" role="group" aria-label="View direction" id="viewSeg">
+            <button type="button" data-view="3d" aria-pressed="true">3D</button>
+            <button type="button" data-view="section" aria-pressed="false">Along the truss</button>
+            <button type="button" data-view="top" aria-pressed="false">Top</button>
+          </span></span>
+        </div>
+        <div class="view3d" id="view3d" role="img" aria-label="3D view of the greenhouse with trusses, Voltiris modules, LEDs, the rays of one LED and the light on the crop"></div>
+        <div class="legend3d"><span><i style="background:#e8590c"></i>LED</span><span><i style="background:#ffb000"></i>Ray that reaches the crop</span><span><i style="background:#ff2d55"></i>Ray that ends on a Voltiris part</span><span><i style="background:#8fbaf5"></i>Lamellas (pass PAR)</span><span><i style="background:#3a4757"></i>Opaque parts</span></div>
+      </div>
+
+      <div class="card panel">
+        <div class="panel-h">
+          <h3>Section</h3><span class="sub" id="secSub"></span>
+          <span class="right"><span><span class="sw" style="background:var(--accent)"></span>LED light</span><button class="info" style="position:static" type="button" data-pop="section" aria-label="How to read the section">i</button></span>
+        </div>
+        <div class="canvas-box"><canvas id="secCanvas" role="img" aria-label="Cross-section of one chapel with truss, Voltiris modules, LEDs, their light and the crop"></canvas></div>
+      </div>
+
+      <div class="twocol">
+        <div class="card panel">
+          <div class="panel-h">
+            <h3>Light on the crop</h3><span class="sub" id="mapSub"></span>
+            <span class="right"><button class="info" style="position:static" type="button" data-pop="map" aria-label="How to read the light map">i</button></span>
+          </div>
+          <div class="canvas-box" id="mapBox"><canvas id="mapCanvas" role="img" aria-label="Map of the light on the crop over one chapel and one truss bay"></canvas><div class="tip" id="mapTip" hidden></div></div>
+          <div class="legend"><span id="legMin"></span><canvas class="bar" id="legBar" width="280" height="18"></canvas><span id="legMax"></span><span>µmol/m²s</span><span style="margin-left:auto">Click a spot to see its calculation</span></div>
+        </div>
+        <div class="card panel">
+          <div class="panel-h">
+            <h3>Where to hang them</h3><span class="sub">Same LEDs, three cases</span>
+            <span class="right"><button class="info" style="position:static" type="button" data-pop="compare" aria-label="About this comparison">i</button></span>
+          </div>
+          <div class="tblwrap"><table class="t" id="cmpTable">
+            <thead><tr><th>Case</th><th class="n">To the crop</th><th class="n">Light</th><th class="n">Uniformity</th><th class="n">Blocked</th></tr></thead>
+            <tbody></tbody>
+          </table></div>
+          <p class="hint" id="cmpNote">Light in µmol/m²s on the top of the crop. Uniformity is the darkest spot divided by the average.</p>
+          <div class="formula" id="powerLine"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <section class="below" aria-label="LED datasheets and method">
+    <div class="card panel" id="library">
+      <div class="panel-h"><h3>LED datasheets</h3><span class="sub">Public data from each maker. Click a row to simulate it.</span></div>
+      <div class="chips" id="brandChips" role="group" aria-label="Filter by brand"></div>
+      <div class="tblwrap"><table class="t" id="libTable">
+        <thead><tr><th>Maker</th><th>Fixture</th><th class="n">PPF µmol/s</th><th class="n">Power W</th><th class="n">µmol/J</th><th class="n">Size mm</th><th class="n">kg</th><th>Optics</th><th>Beam data</th><th>Source</th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+    </div>
+    <div class="card panel">
+      <div class="panel-h"><h3>How the simulation works</h3></div>
+      <div class="method">
+        <div>
+          <h4>Every ray, every LED</h4>
+          <p>The face of each nearby LED is split into up to 15 × 2 points, so thin Voltiris parts cast the soft shadow a real fixture casts. From each point, rays leave in every direction below the fixture, weighted by the beam shape. The light on a spot of the crop adds up the rays of all LEDs within six chapels and eight truss bays.</p>
+          <div class="formula"><span class="lhs">E =</span> Σ Φ · I(γ, C) · T(γ, C) · cos γ / d²</div>
+        </div>
+        <div>
+          <h4>Voltiris parts cast shadows</h4>
+          <p>The module, receiver, tracker, I-structure, profile, rods and optimisers are boxes taken from our 3D model. A ray that hits one is stopped (T = 0). The lamellas let PAR through, so they are left out. With Voltiris off, the same LEDs give the reference.</p>
+        </div>
+        <div>
+          <h4>Beam shapes</h4>
+          <p>Most makers publish only a beam angle. We then use the smooth curve with half its peak at that angle (cosⁿ γ). Where a measured curve exists we use it, and you can load an IES or LDT file. Real optics can be wider than the smooth curve: ask the maker for the file.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer class="foot"><div class="wrap"><span>Voltiris SA · Lausanne · LED lab, for planning. Results are estimates; check the light plan with your LED supplier.</span><span id="buildInfo"></span></div></footer>
+
+<dialog class="pop" id="pop" aria-labelledby="popTitle">
+  <div class="pop-h"><h3 id="popTitle"></h3><button class="x" type="button" id="popClose" aria-label="Close">×</button></div>
+  <div class="pop-b" id="popBody"></div>
+</dialog>
+
+<script src="vendor/jspdf.umd.min.js"></script>
+<script src="vendor/three.min.js"></script>
+<script src="vendor/OrbitControls.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
